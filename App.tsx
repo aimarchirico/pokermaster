@@ -2,11 +2,13 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet } from 'react-native';
 import { AddScreen } from './src/screens/AddScreen'
 import { TotalScreen } from './src/screens/TotalScreen';;
 import { Player } from './src/types/Player';
 import { RootTabParamList } from './src/types/RootTabParamList';
+import { AuthProvider, useAuth } from './src/api/AuthContext';
+import { LoginScreen } from './src/screens/LoginScreen';
+
 
 
 const Tab = createBottomTabNavigator<RootTabParamList, "navigatorID">();
@@ -17,7 +19,13 @@ const players = [
   new Player("Player 3", 0),
 ];
 
-export default function App() {
+const MainApp = () => {
+  const { auth } = useAuth();
+
+  if (!auth) {
+    return <LoginScreen />;
+  }
+
   return (
     <NavigationContainer>
       <Tab.Navigator id="navigatorID">
@@ -40,10 +48,10 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-  },
-});
+export default function App() {
+  return (
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
+  );
+}

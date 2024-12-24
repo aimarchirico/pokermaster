@@ -20,7 +20,7 @@
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.PokerMasterPro"
+      "package": "com.aimar.pokermasterpro"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"

@@ -1,28 +1,23 @@
 import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { Text, View, Button, StyleSheet } from 'react-native';
+import { useSignin, useSignout } from '../api/ManageAccount';
 import { useAuth } from '../api/AuthContext';
 
 export const LoginScreen = () => {
-  const { setAuth } = useAuth();
 
-  const signIn = async () => {
-    try {
-      GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const tokens = await GoogleSignin.getTokens();
-
-      setAuth({
-        accessToken: tokens.accessToken
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { signIn } = useSignin();
+  const { signOut } = useSignout();
+  const { auth } = useAuth();
 
   return (
     <View style={styles.container}>
-      <Button title="Sign in with Google" onPress={signIn} />
+      {
+        auth === null ? (
+          <Button title="Sign in with Google" onPress={signIn} />
+        ) : (
+          <Button title="Sign out with Google" onPress={signOut} />
+        )  
+      }  
     </View>
   )
 }

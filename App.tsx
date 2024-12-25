@@ -8,6 +8,8 @@ import { Player } from './src/types/Player';
 import { RootTabParamList } from './src/types/RootTabParamList';
 import { AuthProvider, useAuth } from './src/api/AuthContext';
 import { LoginScreen } from './src/screens/LoginScreen';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
 
 
 
@@ -19,12 +21,14 @@ const players = [
   new Player("Player 3", 0),
 ];
 
+GoogleSignin.configure({
+  scopes: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file'],
+  webClientId: "51631271989-jfp24tmq4jn4t3lepv19hhh0ddhkiuln.apps.googleusercontent.com"
+})
+
+
 const MainApp = () => {
   const { auth } = useAuth();
-
-  if (!auth) {
-    return <LoginScreen />;
-  }
 
   return (
     <NavigationContainer>
@@ -42,6 +46,10 @@ const MainApp = () => {
           initialParams={{
             players: players
           }}
+          />
+          <Tab.Screen 
+          name="Account" 
+          component={LoginScreen}
         />
       </Tab.Navigator>
     </NavigationContainer>

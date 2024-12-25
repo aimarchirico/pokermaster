@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.PokerMasterPro'
+    namespace 'com.aimar.pokermasterpro'
     defaultConfig {
-        applicationId 'com.anonymous.PokerMasterPro'
+        applicationId 'com.aimar.pokermasterpro'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -7,4 +7,6 @@ export type RootTabParamList = {
   Total: {
     players: Player[];
   };
+  Account: {
+  };
 };

@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.aimar.pokermasterpro"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"

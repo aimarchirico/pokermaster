@@ -1,0 +1,17 @@
+export interface Spreadsheet {
+  id: string;
+  name: string;
+}
+
+export interface Sheet {
+  properties: {
+    title: string;
+  };
+}
+export interface FetchSpreadsheetsResponse {
+  files: Spreadsheet[];
+}
+
+export interface FetchSheetsResponse {
+  sheets: Sheet[];
+}

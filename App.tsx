@@ -6,7 +6,7 @@ import { AddScreen } from './src/screens/AddScreen'
 import { TotalScreen } from './src/screens/TotalScreen';;
 import { Player } from './src/types/Player';
 import { RootTabParamList } from './src/types/RootTabParamList';
-import { AuthProvider, useAuth } from './src/api/AuthContext';
+import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
@@ -22,7 +22,7 @@ const players = [
 ];
 
 GoogleSignin.configure({
-  scopes: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file'],
+  scopes: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive'],
   webClientId: "51631271989-jfp24tmq4jn4t3lepv19hhh0ddhkiuln.apps.googleusercontent.com"
 })
 

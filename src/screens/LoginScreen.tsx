@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View, Button, StyleSheet } from 'react-native';
-import { useSignin, useSignout } from '../api/ManageAccount';
-import { useAuth } from '../api/AuthContext';
+import { useGoogleSignin } from '../hooks/GoogleSignin';
+import { useAuth } from '../contexts/AuthContext';
+import { SpreadsheetPicker } from '../components/SpreadsheetPicker';
 
 export const LoginScreen = () => {
 
-  const { signIn } = useSignin();
-  const { signOut } = useSignout();
+  const { signIn, signOut } = useGoogleSignin();
   const { auth } = useAuth();
 
   return (
@@ -18,6 +18,7 @@ export const LoginScreen = () => {
           <Button title="Sign out with Google" onPress={signOut} />
         )  
       }  
+      <SpreadsheetPicker/>
     </View>
   )
 }

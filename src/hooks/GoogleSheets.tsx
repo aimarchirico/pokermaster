@@ -1,36 +1,39 @@
-import { useCallback, useState } from "react"
+import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { FetchSheetsResponse, FetchSpreadsheetsResponse, Sheet, Spreadsheet } from "../types/GoogleSheetsTypes";
-import { GoogleAuth } from "../types/GoogleAuth";
+import {
+  FetchSheetsResponse,
+  FetchSpreadsheetsResponse,
+  Spreadsheet,
+  SheetData,
+  FetchDataResponse,
+} from "../types/SpreadsheetTypes";
+import { GoogleAuth } from "../types/AuthTypes";
+import { usePlayers } from "../contexts/PlayersContext";
 
 export const useGoogleSheets = () => {
   const { auth, setAuth } = useAuth();
-  const [spreadsheets, setSpreadsheets] = useState<Spreadsheet[]>([]); 
-  const [sheets, setSheets] = useState<Sheet[]>([]); 
-  
+  const [spreadsheets, setSpreadsheets] = useState<Spreadsheet[]>([]);
+  const { players } = usePlayers();
 
-  const fetchSpreadsheets = useCallback(async (filter: string) : Promise<void> => {
+  const fetchSpreadsheets = async (filter: string): Promise<void> => {
     if (!auth?.accessToken) {
-      console.error('No access token available.')
+      console.error("No access token available.");
       return;
     }
 
     try {
-      const query = encodeURIComponent(`name contains '${filter}' and mimeType='application/vnd.google-apps.spreadsheet'`);
-      const url = `https://www.googleapis.com/drive/v3/files?q=${query}`
-      const response = await fetch(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${auth.accessToken}`
-          }
-        }
+      const query = encodeURIComponent(
+        `name contains '${filter}' and mimeType='application/vnd.google-apps.spreadsheet'`
       );
-      
+      const url = `https://www.googleapis.com/drive/v3/files?q=${query}`;
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      });
+
       if (!response.ok) {
-        console.log(response.status)
-        console.log(url)
-        throw new Error(`Error fetching spreadsheets: ${response.statusText}`)
+        throw new Error(`Error fetching spreadsheets: ${response.statusText}`);
       }
 
       const data: FetchSpreadsheetsResponse = await response.json();
@@ -38,11 +41,11 @@ export const useGoogleSheets = () => {
     } catch (error) {
       console.error(error);
     }
-  },[auth]);
+  };
 
-  const fetchSheets = useCallback(async (spreadsheetId: string): Promise<void> => {
+  const fetchSheets = async (spreadsheetId: string) => {
     if (!auth?.accessToken) {
-      console.error('No access token available.');
+      console.error("No access token available.");
       return;
     }
 
@@ -51,60 +54,78 @@ export const useGoogleSheets = () => {
         `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`,
         {
           headers: {
-            Authorization: `Bearer ${auth.accessToken}`
-          }
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Error fetching sheets: ${response.statusText}`)
+        throw new Error(`Error fetching sheets: ${response.statusText}`);
       }
 
       const data: FetchSheetsResponse = await response.json();
-      setSheets(data.sheets || []);
+      return data.sheets || [];
     } catch (error) {
       console.error(error);
+      return [];
     }
-  }, [auth]);
+  };
 
-  const selectSpreadsheet = useCallback((spreadsheetId: string): void => {
-    const updatedAuth: GoogleAuth = {
-      ...auth,
-      spreadsheetId: spreadsheetId
-    }
-    setAuth(updatedAuth);
-    fetchSheets(spreadsheetId);
-    const inputSheet = sheets.find(sheet => sheet.properties.title === 'input');
+  const selectSpreadsheet = async (spreadsheetId: string): Promise<void> => {
+    const sheets = await fetchSheets(spreadsheetId);
+    const inputSheet = sheets.find(
+      (sheet) => sheet.properties.title === "input"
+    );
+    const { rows } = await fetchData(spreadsheetId, "1:1");
+    const headers = rows[0];
     if (!inputSheet) {
-      console.log('Spreadsheet must contain a sheet named input.');
+      console.log("Spreadsheet must contain a sheet named input.");
+    } else if (JSON.stringify(headers.slice(1)) !== JSON.stringify(players.map((player) => player.name))) {
+      console.log('Headers are invalid.');
+    } else {
+      const updatedAuth: GoogleAuth = {
+        ...auth,
+        spreadsheetId: spreadsheetId,
+      };
+      setAuth(updatedAuth);
     }
-    else {
-      selectSheet(inputSheet.properties.title);
-    }
-  }, [fetchSheets, setAuth]);
-  
-  const selectSheet = useCallback((sheetId: string): void => {
-    const updatedAuth: GoogleAuth = {
-      ...auth,
-      sheetId: sheetId
-    }
-    setAuth(updatedAuth);
-  }, [setAuth]);
+  };
 
-  
+  const fetchData = async (
+    spreadsheetId: string,
+    range: string
+  ): Promise<SheetData> => {
+    try {
+      const response = await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/input!${range}`,
+        {
+          headers: {
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`);
+      }
+
+      const data: FetchDataResponse = await response.json();
+      return {
+        rows: data.values || [],
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        rows: [],
+        error: error.message,
+      };
+    }
+  };
 
   return {
     spreadsheets,
-    sheets,
     fetchSpreadsheets,
-    fetchSheets,
     selectSpreadsheet,
-    selectSheet,
-  }
-  
-
-}
-
-
-
-
+    fetchData,
+  };
+};

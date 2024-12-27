@@ -11,7 +11,7 @@ export const TotalScreen = ({ route }: TotalScreenProps) => {
     const { players } = route.params;
 
     return (
-        <View>
+        <View style={styles.container}>
             {players.map(player => (
                 <PlayerTotal
                 key={player.name}

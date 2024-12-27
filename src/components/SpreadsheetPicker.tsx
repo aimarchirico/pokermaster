@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGoogleSheets } from "../hooks/GoogleSheets";
 import { View, Text, FlatList, Button , StyleSheet, TextInput } from "react-native";
 
 export const SpreadsheetPicker = () => {
   const {
     spreadsheets,
-    sheets,
     fetchSpreadsheets,
     selectSpreadsheet,
-    selectSheet,
+    fetchData
   } = useGoogleSheets();
 
   const [filter, setFilter] = useState("");
@@ -42,18 +41,6 @@ export const SpreadsheetPicker = () => {
         )}
       />
 
-      <Text>Sheets:</Text>
-      <FlatList
-        style={styles.list}
-        data={sheets}
-        keyExtractor={(item) => item.properties.title}
-        renderItem={({ item }) => (
-          <Button
-            title={item.properties.title}
-            onPress={() => selectSpreadsheet(item.properties.title)}
-          />
-        )}
-      />
 
     </View>
   );

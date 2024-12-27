@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet } from 'react-native';
 import { useGoogleSignin } from '../hooks/GoogleSignin';
 import { useAuth } from '../contexts/AuthContext';
 import { SpreadsheetPicker } from '../components/SpreadsheetPicker';

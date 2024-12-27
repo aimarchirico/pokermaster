@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import { Player } from "../types/Player";
-
-interface PlayerAddProps {
-  player: Player;
-  onAmountChange: (amount: number) => void;
-  resetTrigger: number;
-}
+import { PlayerAddProps } from "../types/PlayerTypes";
 
 export const PlayerAdd = ({
   player,

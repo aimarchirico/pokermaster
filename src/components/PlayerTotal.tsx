@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { Player } from "../types/Player";
-
-interface PlayerTotalProps {
-  player: Player;
-}
+import React, { View, Text, StyleSheet } from "react-native";
+import { PlayerTotalProps } from "../types/PlayerTypes";
 
 export const PlayerTotal = ({ player }: PlayerTotalProps) => {
   return (

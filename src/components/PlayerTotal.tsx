@@ -19,9 +19,11 @@ const styles = StyleSheet.create({
   name: {
     flex: 1,
     fontSize: 20,
+    color: '#fff'
   },
   balance: {
     flex: 1,
     fontSize: 16,
+    color: '#fff'
   },
 });

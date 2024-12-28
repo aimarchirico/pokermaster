@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import { View, Button, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { PlayerAdd } from "../components/PlayerAdd";
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { RootTabParamList } from "../types/RootTabParamList";
+import { usePlayers } from "../contexts/PlayersContext";
+import { useGoogleSheets } from '../hooks/GoogleSheets'
+import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "@react-navigation/native";
 
-type AddScreenProps = BottomTabScreenProps<RootTabParamList, "Add">;
+export const AddScreen = () => {
 
-export const AddScreen = ({ route }: AddScreenProps) => {
-
-  const { players } = route.params;
-
-  const [inputAmounts, setInputAmounts] = useState<{ [key: string]: number }>({});
+  const { players, setPlayers } = usePlayers();
+  const [inputAmounts, setInputAmounts] = useState<{ [key: string]: string }>({});
   const [resetTrigger, setResetTrigger] = useState(0);
+  const { appendData } = useGoogleSheets();
+  const { auth } = useAuth();
+  const { colors } = useTheme();
 
-  const handleAmountChange = (name: string, amount: number) => {
+  const handleAmountChange = (name: string, amount: string) => {
     setInputAmounts(prev => ({
       ...prev,
       [name]: amount
@@ -21,17 +23,42 @@ export const AddScreen = ({ route }: AddScreenProps) => {
   };
 
   const handleConfirm = () => {
-    players.forEach(player => {
-      const amount = inputAmounts[player.name] || 0;
-      player.updateBalance(amount);
-    });
-    setInputAmounts({})
-    setResetTrigger(prev => prev + 1)
+    try {
+      const data = players.map(player => inputAmounts[player.name] || "0");
+      appendData(data)
+      const updatedPlayers = [...players];
+      updatedPlayers.forEach(player => {
+        player.updateBalance(parseFloat(inputAmounts[player.name]) || 0);
+      });
+      setPlayers(updatedPlayers);
+      setInputAmounts({})
+      setResetTrigger(prev => prev + 1)
+    }
+    catch (error) {
+      console.error(error)
+    }
+    
   };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+    },
+    button: {
+      backgroundColor: colors.card,
+      padding: 10,
+      marginVertical: 5,
+      borderRadius: 5
+    },
+    text: {
+      color: colors.text
+    },
+  });
 
   return (
     <View style={styles.container}>
-      {players.map(player => (
+      {players?.map(player => (
         <PlayerAdd
           key={player.name}
           player={player}
@@ -39,14 +66,13 @@ export const AddScreen = ({ route }: AddScreenProps) => {
           resetTrigger={resetTrigger}
         />
       ))}
-      <Button title="Confirm Changes" onPress={handleConfirm}/>
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={handleConfirm}>
+        <Text style={styles.text}>Confirm changes</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-});
+

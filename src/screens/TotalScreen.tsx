@@ -1,14 +1,11 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { RootTabParamList } from "../types/RootTabParamList";
 import { PlayerTotal } from "../components/PlayerTotal";
+import { usePlayers } from "../contexts/PlayersContext";
 
-type TotalScreenProps = BottomTabScreenProps<RootTabParamList, "Total">;
+export const TotalScreen = () => {
 
-export const TotalScreen = ({ route }: TotalScreenProps) => {
-
-    const { players } = route.params;
+    const { players } = usePlayers();
 
     return (
         <View style={styles.container}>

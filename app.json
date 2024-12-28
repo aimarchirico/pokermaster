@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "PokerMasterPro",
+    "name": "PokerMaster Pro",
     "slug": "PokerMasterPro",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/icon.png",
+    "icon": "./src/assets/poker-chip.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -12,12 +12,16 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "androidNavigationBar": {
+      "backgroundColor": "#121212",
+      "barStyle": "light-content"
+    },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/poker-chip.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.aimar.pokermasterpro"

@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import { Player } from "../types/Player";
-
-interface PlayerAddProps {
-  player: Player;
-  onAmountChange: (amount: number) => void;
-  resetTrigger: number;
-}
+import { PlayerAddProps } from "../types/PlayerTypes";
 
 export const PlayerAdd = ({
   player,
@@ -21,7 +15,7 @@ export const PlayerAdd = ({
 
   const handleInputChange = (text: string) => {
     setInputValue(text);
-    const amount = parseFloat(text) || 0;
+    const amount = text || "0";
     onAmountChange(amount);
   };
 
@@ -47,6 +41,7 @@ const styles = StyleSheet.create({
   name: {
     flex: 1,
     fontSize: 16,
+    color: '#fff'
   },
   input: {
     width: 100,
@@ -54,5 +49,6 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     padding: 5,
     borderRadius: 5,
+    color: '#fff'
   },
 });

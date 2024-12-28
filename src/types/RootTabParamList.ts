@@ -1,4 +1,4 @@
-import { Player } from "../types/Player";
+import { Player } from "./PlayerTypes";
 
 export type RootTabParamList = {    
   Add: {
@@ -6,5 +6,7 @@ export type RootTabParamList = {
   };
   Total: {
     players: Player[];
+  };
+  Account: {
   };
 };

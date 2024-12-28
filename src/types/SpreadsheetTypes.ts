@@ -24,3 +24,10 @@ export interface SheetData {
   rows: string[][];
   error?: string;
 }
+
+
+export interface ApiRequest {
+  url: string;
+  method?: 'GET' | 'PUT' | 'POST';
+  data?: any;
+}

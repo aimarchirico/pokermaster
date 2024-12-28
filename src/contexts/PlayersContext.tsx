@@ -4,7 +4,7 @@ import { Player, PlayersContextType, PlayersProviderProps } from "../types/Playe
 const PlayersContext = createContext<PlayersContextType | undefined>(undefined);
 
 export const PlayersProvider = ({ children }: PlayersProviderProps) => {
-  const [players, setPlayers] = useState<Player[] | []>(null);
+  const [players, setPlayers] = useState<Player[] | []>([]);
 
   return (
     <PlayersContext.Provider value={{ players, setPlayers }}>

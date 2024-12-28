@@ -18,7 +18,7 @@ export interface PlayerTotalProps {
 
 export interface PlayerAddProps {
   player: Player;
-  onAmountChange: (amount: number) => void;
+  onAmountChange: (amount: string) => void;
   resetTrigger: number;
 }
 

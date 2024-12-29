@@ -14,6 +14,8 @@ import { useGoogleSheets } from './src/hooks/GoogleSheets';
 import { Ionicons } from '@expo/vector-icons'; 
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet } from 'react-native';
+import { useFonts } from 'expo-font';
+import { useStyles, StylesProvider } from './src/styles/StylesContext';
 
 
 const CustomDarkTheme = {
@@ -40,6 +42,13 @@ const MainApp = () => {
   const { fetchData } = useGoogleSheets(); 
   const { auth } = useAuth();
   const { setPlayers } = usePlayers();
+  const { globalStyles } = useStyles();
+
+  const [fontsLoaded] = useFonts({
+    'GoogleSans-Regular': require('./src/assets/fonts/GoogleSans-Regular.ttf'),
+    'GoogleSans-Bold': require('./src/assets/fonts/GoogleSans-Bold.ttf'),
+  });
+
 
   const fetchPlayers = async () => {
     if (auth.spreadsheetId) {
@@ -54,13 +63,16 @@ const MainApp = () => {
   }, [auth?.spreadsheetId]);
   
   return (
-    <NavigationContainer theme={CustomDarkTheme}>
-      <View style={styles.container}/>
+    
+      
+      <>
       <StatusBar style='inverted' />
       <Tab.Navigator id="navigatorID"
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
-        tabBarInactiveTintColor: 'gray'
+        tabBarInactiveTintColor: 'gray',
+        tabBarLabelStyle: globalStyles.text,
+        headerTitleStyle: globalStyles.header
       }}
       >
         <Tab.Screen 
@@ -91,23 +103,23 @@ const MainApp = () => {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
+      </>
+     
+    
   );
 }
 
 export default function App() {
   return (
+    <NavigationContainer theme={CustomDarkTheme}>
+    <StylesProvider>
     <PlayersProvider>
       <AuthProvider>
         <MainApp />
       </AuthProvider>
     </PlayersProvider>
+     </StylesProvider>
+    </NavigationContainer>
     
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#121212'
-  },
-})

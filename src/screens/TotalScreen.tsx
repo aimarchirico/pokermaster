@@ -1,21 +1,23 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { PlayerTotal } from "../components/PlayerTotal";
 import { usePlayers } from "../contexts/PlayersContext";
+import { useStyles } from "../styles/StylesContext";
 
 export const TotalScreen = () => {
 
     const { players } = usePlayers();
+    const { globalStyles } = useStyles();
 
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={globalStyles.container}>
             {players.map(player => (
                 <PlayerTotal
                 key={player.name}
                 player={player}
                 />
             ))}
-        </View>
+        </ScrollView>
     )
 }
 

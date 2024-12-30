@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useGoogleSheets } from "../hooks/GoogleSheets";
-import { View, Text, FlatList, Button , StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import useGoogleSheets from "../hooks/GoogleSheets";
+import { View, Text, FlatList, Alert , StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { useStyles } from "../styles/StylesContext";
+import CustomAlert from "./CustomAlert";
 
-export const SpreadsheetPicker = () => {
+const SpreadsheetPicker = ({ setShowPicker }) => {
   const {
     spreadsheets,
     fetchSpreadsheets,
@@ -12,67 +13,78 @@ export const SpreadsheetPicker = () => {
 
   const [filter, setFilter] = useState('');
 
-  const { colors } = useTheme();
+  const { globalStyles } = useStyles();
+  
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     fetchSpreadsheets(filter);
   }, [fetchSpreadsheets, filter]);
 
 
+  const handleSelectSpreadsheet = async (id, name) => {
+    try {
+      await selectSpreadsheet(id, name);
+      setShowPicker(false);
+    }
+    catch (error) {
+      setAlertMessage(error.message);
+      setAlertVisible(true);
+    }
+  };
+
   const styles = StyleSheet.create({
     list: {
-      height: '30%',
-      padding: 16,
-      backgroundColor: colors.background
+      width: '100%'
     },
     listItem: {
-      backgroundColor: colors.card,
-      padding: 10,
-      marginVertical: 5,
-      borderRadius: 5
+      height: 65,
+      width: '100%'
     },
-    text: {
-      color: colors.text
-    },
-    input: {
-      width: 100,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 5,
-      borderRadius: 5,
-      color: colors.text
+    listText: {
+      fontSize: 16
     }
-  });
-
+  })
 
   return (
-    <View>
-      <Text style={styles.text}>Spreadsheets:</Text>
+    <View style={globalStyles.container}>
+      <View style={globalStyles.card}>
+      <Text style={globalStyles.text}>Filter spreadsheets:</Text>
       <TextInput
-              style={styles.input}
-              value={filter}
-              onChangeText={(text: string) => setFilter(text)}
-              keyboardType='ascii-capable'
-            />
+        style={StyleSheet.compose(globalStyles.text,globalStyles.input)}
+        value={filter}
+        onChangeText={(text: string) => setFilter(text)}
+        keyboardType='ascii-capable'
+      />
+      </View>
+      
       <FlatList
-        style={styles.list}
+        contentContainerStyle={StyleSheet.compose(globalStyles.container,styles.list)}
         data={spreadsheets}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity 
-            style={styles.listItem}
-            onPress={() => selectSpreadsheet(item.id)}
+            style={StyleSheet.compose(globalStyles.card,styles.listItem)}
+            onPress={() => handleSelectSpreadsheet(item.id,item.name)}
           >
-            <Text style={styles.text}>{item.name}</Text>
+            <Text style={StyleSheet.compose(globalStyles.text,styles.listText)}>{item.name}</Text>
           </TouchableOpacity>
+          
         )}
       />
 
-
+      <CustomAlert
+        visible={alertVisible}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+      />
     </View>
   );
 
 
   
 };
+
+export default SpreadsheetPicker;
 

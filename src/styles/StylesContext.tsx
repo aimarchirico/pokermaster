@@ -10,37 +10,62 @@ export const StylesProvider = ({ children }: StylesProviderProps) => {
 
   const globalStyles = StyleSheet.create({
     container: {
-      marginVertical: 10,
       alignItems: 'center',
       backgroundColor: colors.background,
-      flexDirection: 'column'
+      flexDirection: 'column',
+      width: '100%'
+    },
+    flexContainer: {
+      padding: 16,
+      flex: 1
     },
     card: {
       backgroundColor: colors.card,
-      padding: 30,
       flexDirection: 'row',
       marginVertical: 6,
-      borderRadius: 5
+      borderRadius: 5,
+      height: 65,
+      padding: 16,
+      alignItems: 'center'
     },
     text: {
       fontFamily: 'GoogleSans-Regular',
       color: colors.text,
-      fontSize: 10,
+      fontSize: 16,
       flex: 1,
+      width: '100%'
+    },
+    smallText: {
+      fontSize: 10,
     },
     header: {
       fontFamily: 'GoogleSans-Bold',
-      color: colors.text,
-      fontSize: 20
+      padding: 16,
+      fontSize: 25,
+      width: '200%'
+    },
+    buttonText: {
+      textAlign: 'center'
     },
     input: {
-      width: 100,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 5,
+      borderColor: colors.border, 
+      flex: 0.5,
+      borderWidth: 2,
       borderRadius: 5,
-      color: colors.text,
+      padding: 10,
+      height: 40,
+      textAlign: 'right',
+      margin: 10
     },
+      subheader: {
+        fontSize: 14
+      },
+      rightSubheader: {
+        fontSize: 14,
+        textAlign: 'right'
+      }
+     
+    
   });
 
   return (

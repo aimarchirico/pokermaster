@@ -18,7 +18,7 @@ export interface PlayerTotalProps {
 
 export interface PlayerAddProps {
   player: Player;
-  onAmountChange: (amount: string) => void;
+  onAmountChange: (type: string, amount: number) => void;
   resetTrigger: number;
 }
 
@@ -29,4 +29,9 @@ export interface PlayersContextType {
 
 export interface PlayersProviderProps {
   children: React.ReactNode;
+}
+
+export interface AmountData {
+  start: number;
+  end: number;
 }

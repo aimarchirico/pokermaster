@@ -1,6 +1,6 @@
 import { Player } from "./PlayerTypes";
 
-export type RootTabParamList = {    
+type RootTabParamList = {    
   Add: {
     players: Player[];
   };
@@ -10,3 +10,5 @@ export type RootTabParamList = {
   Account: {
   };
 };
+
+export default RootTabParamList;

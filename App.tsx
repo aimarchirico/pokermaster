@@ -5,17 +5,18 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AddScreen } from './src/screens/AddScreen'
 import { TotalScreen } from './src/screens/TotalScreen';;
 import { Player } from './src/types/PlayerTypes';
-import { RootTabParamList } from './src/types/RootTabParamList';
+import RootTabParamList from './src/types/RootTabParamList';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import { PlayersProvider, usePlayers } from './src/contexts/PlayersContext';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { useGoogleSheets } from './src/hooks/GoogleSheets'; 
+import useGoogleSheets from './src/hooks/GoogleSheets'; 
 import { Ionicons } from '@expo/vector-icons'; 
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useStyles, StylesProvider } from './src/styles/StylesContext';
+import { getISOWeekNumber } from './src/utils/dateUtils';
 
 
 const CustomDarkTheme = {
@@ -50,18 +51,6 @@ const MainApp = () => {
   });
 
 
-  const fetchPlayers = async () => {
-    if (auth.spreadsheetId) {
-      const response  = await fetchData('B1:2');
-      const players: Player[] = response[0].map((name: string, i: number) => new Player(name, parseFloat(response[1][i])));
-      setPlayers(players);
-    }
-  }
-
-  useEffect(() => {
-    fetchPlayers();
-  }, [auth?.spreadsheetId]);
-  
   return (
     
       
@@ -71,14 +60,15 @@ const MainApp = () => {
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
         tabBarInactiveTintColor: 'gray',
-        tabBarLabelStyle: globalStyles.text,
-        headerTitleStyle: globalStyles.header
+        tabBarLabelStyle: StyleSheet.compose(globalStyles.text, globalStyles.smallText),
+        headerTitleStyle: StyleSheet.compose(globalStyles.text, globalStyles.header)
       }}
       >
         <Tab.Screen 
           name="Add" 
-          component={AddScreen}
+          component={auth?.accessToken && auth?.spreadsheetId ? AddScreen : LoginScreen}
           options={{
+            headerTitle: `Week ${getISOWeekNumber(new Date())}`,
             tabBarIcon: ({ color, size }) => (
               <Ionicons name='add-circle' size={size} color={color} />
             )
@@ -86,7 +76,7 @@ const MainApp = () => {
         />
         <Tab.Screen 
           name="Total" 
-          component={TotalScreen}
+          component={auth?.accessToken && auth?.spreadsheetId ? TotalScreen : LoginScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name='stats-chart' size={size} color={color} />

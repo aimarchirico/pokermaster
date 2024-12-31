@@ -115,7 +115,10 @@ const useGoogleSheets = () => {
       spreadsheetName
     };
     setAuth(updatedAuth);
-    setPlayers(headers.map((name, i) => new Player(name,totals[i])))
+    setPlayers(headers.map((name, i) => ({
+      name,
+      balance: totals[i]
+    })))
   };
 
   return {

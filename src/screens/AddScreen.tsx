@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from "react-native";
 import PlayerAdd from "../components/PlayerAdd";
 import { usePlayers } from "../contexts/PlayersContext";
-import { AmountData } from "../types/PlayerTypes";
+import { AmountData, Player } from "../types/PlayerTypes";
 import useGoogleSheets from '../hooks/GoogleSheets'
 import { useStyles } from "../styles/StylesContext";
 import CustomAlert from "../components/CustomAlert";
@@ -30,6 +30,10 @@ export const AddScreen = () => {
     }));
   };
 
+  const updateBalance = (player: Player) => {
+    player.balance += (inputAmounts[player.name]?.end || 0 - inputAmounts[player.name]?.start || 0)
+  }
+
   const handleConfirm = () => {
     try {
       const data = players.map(player => 
@@ -41,7 +45,7 @@ export const AddScreen = () => {
       appendData(data.map(value => value.toString()))
       const updatedPlayers = [...players];
       updatedPlayers.forEach(player => {
-        player.updateBalance((inputAmounts[player.name]?.end || 0 - inputAmounts[player.name]?.start || 0));
+        updateBalance(player);
       });
       setPlayers(updatedPlayers);
       setInputAmounts({})

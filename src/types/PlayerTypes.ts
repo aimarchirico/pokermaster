@@ -1,15 +1,6 @@
-export class Player {
+export interface Player {
   name: string;
   balance: number;
-
-  constructor(name: string, balance: number) {
-    this.name = name;
-    this.balance = balance;
-  }
-
-  updateBalance(amount: number): void {
-    this.balance += amount;
-  }
 }
 
 export interface PlayerTotalProps {

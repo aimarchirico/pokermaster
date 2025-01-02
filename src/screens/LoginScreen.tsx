@@ -1,51 +1,83 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { useGoogleSignin } from '../hooks/GoogleSignin';
-import { useAuth } from '../contexts/AuthContext';
-import { SpreadsheetPicker } from '../components/SpreadsheetPicker';
-import { useTheme } from '@react-navigation/native';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import useGoogleSignin from "../hooks/GoogleSignin";
+import { useAuth } from "../contexts/AuthContext";
+import SpreadsheetPicker from "../components/SpreadsheetPicker";
+import { useStyles } from "../styles/StylesContext";
 
 export const LoginScreen = () => {
-
   const { signIn, signOut } = useGoogleSignin();
   const { auth } = useAuth();
-  const { colors } = useTheme()
+  const { globalStyles } = useStyles();
+  const [showPicker, setShowPicker] = useState(false);
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      padding: 16,
-    },
-    button: {
-      backgroundColor: colors.card,
-      padding: 10,
-      marginVertical: 5,
-      borderRadius: 5
-    },
-    buttonText: {
-      color: colors.text
-    },
-  });
+  const handleShowPicker = () => {
+    setShowPicker(true);
+  };
 
   return (
-    <View style={styles.container}>
-      {
-        auth === null ? (
-          <TouchableOpacity 
-            style={styles.button}
-            onPress={signIn}>
-            <Text style={styles.buttonText}>Sign in with Google</Text>
+    <View
+      style={StyleSheet.compose(
+        globalStyles.container,
+        globalStyles.flexContainer
+      )}
+    >
+      {!auth ? (
+        <TouchableOpacity
+          style={StyleSheet.compose(globalStyles.card, globalStyles.button)}
+          onPress={signIn}
+        >
+          <Text
+            style={StyleSheet.compose(
+              globalStyles.text,
+              globalStyles.buttonText
+            )}
+          >
+            Sign in with Google
+          </Text>
+        </TouchableOpacity>
+      ) : showPicker ? (
+        <SpreadsheetPicker setShowPicker={setShowPicker} />
+      ) : (
+        <>
+          <TouchableOpacity
+            style={StyleSheet.compose(globalStyles.card, globalStyles.button)}
+            onPress={signOut}
+          >
+            <Text
+              style={StyleSheet.compose(
+                globalStyles.text,
+                globalStyles.buttonText
+              )}
+            >
+              Sign out from Google
+            </Text>
           </TouchableOpacity>
-        ) : (
-          <TouchableOpacity 
-            style={styles.button}
-            onPress={signOut}>
-            <Text style={styles.buttonText}>Sign out from Google</Text>
+          <TouchableOpacity
+            style={StyleSheet.compose(globalStyles.card, globalStyles.button)}
+            onPress={handleShowPicker}
+          >
+            <Text
+              style={StyleSheet.compose(
+                globalStyles.text,
+                globalStyles.buttonText
+              )}
+            >
+              Choose spreadsheet
+            </Text>
           </TouchableOpacity>
-        )  
-      }  
-      <SpreadsheetPicker/>
+          <View style={globalStyles.card}>
+            <Text style={globalStyles.text}>Account: {auth.account}</Text>
+          </View>
+          {auth?.spreadsheetId && (
+            <View style={globalStyles.card}>
+              <Text style={globalStyles.text}>
+                Spreadsheet: {auth.spreadsheetName}
+              </Text>
+            </View>
+          )}
+        </>
+      )}
     </View>
-  )
-}
+  );
+};

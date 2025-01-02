@@ -1,29 +1,24 @@
 import React, { View, Text, StyleSheet } from "react-native";
 import { PlayerTotalProps } from "../types/PlayerTypes";
+import { useStyles } from "../styles/StylesContext";
 
-export const PlayerTotal = ({ player }: PlayerTotalProps) => {
+const PlayerTotal = ({ player }: PlayerTotalProps) => {
+  const { globalStyles } = useStyles();
+
+  const styles = StyleSheet.create({
+    balance: {
+      textAlign: "right",
+    },
+  });
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.name}>{player.name}</Text>
-      <Text style={styles.balance}>{player.balance}</Text>
+    <View style={globalStyles.card}>
+      <Text style={globalStyles.text}>{player.name}</Text>
+      <Text style={StyleSheet.compose(globalStyles.text, styles.balance)}>
+        {player.balance}
+      </Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    padding: 10,
-    alignItems: "center",
-  },
-  name: {
-    flex: 1,
-    fontSize: 20,
-    color: '#fff'
-  },
-  balance: {
-    flex: 1,
-    fontSize: 16,
-    color: '#fff'
-  },
-});
+export default PlayerTotal;

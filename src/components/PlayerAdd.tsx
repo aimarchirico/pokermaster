@@ -1,54 +1,52 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { PlayerAddProps } from "../types/PlayerTypes";
+import { useStyles } from "../styles/StylesContext";
 
-export const PlayerAdd = ({
+const PlayerAdd = ({
   player,
   onAmountChange,
-  resetTrigger
+  resetTrigger,
 }: PlayerAddProps) => {
-  const [inputValue, setInputValue] = useState("0");
+  const [startValue, setStartValue] = useState("0");
+  const [endValue, setEndValue] = useState("0");
 
   useEffect(() => {
-    setInputValue("");
+    setStartValue("");
+    setEndValue("");
   }, [resetTrigger]);
 
-  const handleInputChange = (text: string) => {
-    setInputValue(text);
-    const amount = text || "0";
-    onAmountChange(amount);
+  const handleStartChange = (text: string) => {
+    setStartValue(text);
+    const amount = Number(text) || 0;
+    onAmountChange("start", amount);
   };
 
+  const handleEndChange = (text: string) => {
+    setEndValue(text);
+    const amount = Number(text) || 0;
+    onAmountChange("end", amount);
+  };
+
+  const { globalStyles } = useStyles();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.name}>{player.name}</Text>
+    <View style={globalStyles.card}>
+      <Text style={globalStyles.text}>{player.name}</Text>
       <TextInput
-        style={styles.input}
-        value={inputValue}
-        onChangeText={handleInputChange}
+        style={StyleSheet.compose(globalStyles.text, globalStyles.input)}
+        value={startValue}
+        onChangeText={handleStartChange}
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={StyleSheet.compose(globalStyles.text, globalStyles.input)}
+        value={endValue}
+        onChangeText={handleEndChange}
         keyboardType="numeric"
       />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    padding: 10,
-    alignItems: 'center',
-  },
-  name: {
-    flex: 1,
-    fontSize: 16,
-    color: '#fff'
-  },
-  input: {
-    width: 100,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 5,
-    borderRadius: 5,
-    color: '#fff'
-  },
-});
+export default PlayerAdd;

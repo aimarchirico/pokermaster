@@ -1,12 +1,13 @@
-import { Player } from "./PlayerTypes";
-
-export type RootTabParamList = {    
+type RootTabParamList = {
   Add: {
-    players: Player[];
+    object;
   };
   Total: {
-    players: Player[];
+    object;
   };
   Account: {
+    object;
   };
 };
+
+export default RootTabParamList;

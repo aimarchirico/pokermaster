@@ -13,7 +13,7 @@ PokerMaster Pro is a React Native app built with Expo, designed to manage poker 
 - Node.js and npm
 - Expo CLI
 - Google Cloud project with OAuth credentials
-- React Native development environment (Android/iOS)
+- React Native development environment (Android)
 
 ## Installation
 1. Clone the repository

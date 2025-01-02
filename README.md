@@ -2,6 +2,12 @@
 
 PokerMaster Pro is a React Native app built with Expo, designed to manage poker balances and synchronize data with Google Sheets. This makes it easy to track players, input game results, and keep a running total of balances in real time.
 
+<img width=200 src=screenshots/Add.png/>
+<img width=200 src=screenshots/Total.png/>
+<img width=200 src=screenshots/Account.png/>
+
+_Add, total and account screen._
+
 ## Features
 - Login with Google
 - Select a target Google Spreadsheet

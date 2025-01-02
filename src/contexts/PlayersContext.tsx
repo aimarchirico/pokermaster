@@ -1,5 +1,9 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { Player, PlayersContextType, PlayersProviderProps } from "../types/PlayerTypes";
+import {
+  Player,
+  PlayersContextType,
+  PlayersProviderProps,
+} from "../types/PlayerTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const PlayersContext = createContext<PlayersContextType | undefined>(undefined);
@@ -10,12 +14,12 @@ export const PlayersProvider = ({ children }: PlayersProviderProps) => {
   useEffect(() => {
     const loadStoredPlayers = async () => {
       try {
-        const storedPlayers = await AsyncStorage.getItem('players');
+        const storedPlayers = await AsyncStorage.getItem("players");
         if (storedPlayers) {
           setPlayers(JSON.parse(storedPlayers));
         }
       } catch (error) {
-        console.log('No stored players found.')
+        console.log(`No stored players found: ${error.message}`);
       }
     };
     loadStoredPlayers();
@@ -25,12 +29,12 @@ export const PlayersProvider = ({ children }: PlayersProviderProps) => {
     const storePlayers = async () => {
       try {
         if (players) {
-          await AsyncStorage.setItem('players',JSON.stringify(players));
+          await AsyncStorage.setItem("players", JSON.stringify(players));
         } else {
-          await AsyncStorage.removeItem('players');
+          await AsyncStorage.removeItem("players");
         }
       } catch (error) {
-        console.error('Error storing players.')
+        console.error(`Error storing players: ${error.message}`);
       }
     };
     storePlayers();
@@ -44,9 +48,9 @@ export const PlayersProvider = ({ children }: PlayersProviderProps) => {
 };
 
 export const usePlayers = () => {
-  const context = useContext(PlayersContext)
+  const context = useContext(PlayersContext);
   if (context === undefined) {
-    throw new Error("usePlayers must be used within a PlayersProvider.")
+    throw new Error("usePlayers must be used within a PlayersProvider.");
   }
   return context;
 };

@@ -7,17 +7,18 @@ const PlayerTotal = ({ player }: PlayerTotalProps) => {
 
   const styles = StyleSheet.create({
     balance: {
-      textAlign: 'right'
-    }
+      textAlign: "right",
+    },
   });
 
   return (
     <View style={globalStyles.card}>
       <Text style={globalStyles.text}>{player.name}</Text>
-      <Text style={StyleSheet.compose(globalStyles.text, styles.balance)}>{player.balance}</Text>
+      <Text style={StyleSheet.compose(globalStyles.text, styles.balance)}>
+        {player.balance}
+      </Text>
     </View>
   );
 };
 
 export default PlayerTotal;
-

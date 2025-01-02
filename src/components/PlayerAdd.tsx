@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import { PlayerAddProps } from "../types/PlayerTypes";
 import { useStyles } from "../styles/StylesContext";
-import { useTheme } from "@react-navigation/native";
 
 const PlayerAdd = ({
   player,
   onAmountChange,
-  resetTrigger
+  resetTrigger,
 }: PlayerAddProps) => {
   const [startValue, setStartValue] = useState("0");
   const [endValue, setEndValue] = useState("0");
@@ -20,17 +19,16 @@ const PlayerAdd = ({
   const handleStartChange = (text: string) => {
     setStartValue(text);
     const amount = Number(text) || 0;
-    onAmountChange('start',amount);
+    onAmountChange("start", amount);
   };
 
   const handleEndChange = (text: string) => {
     setEndValue(text);
     const amount = Number(text) || 0;
-    onAmountChange('end',amount);
+    onAmountChange("end", amount);
   };
 
   const { globalStyles } = useStyles();
-  
 
   return (
     <View style={globalStyles.card}>

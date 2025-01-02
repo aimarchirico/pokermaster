@@ -1,5 +1,5 @@
 export interface StylesContextType {
-  globalStyles
+  globalStyles;
 }
 
 export interface StylesProviderProps {

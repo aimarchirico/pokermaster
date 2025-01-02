@@ -1,5 +1,9 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { GoogleAuth, AuthContextType, AuthProviderProps } from "../types/AuthTypes";
+import {
+  GoogleAuth,
+  AuthContextType,
+  AuthProviderProps,
+} from "../types/AuthTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -10,12 +14,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const loadStoredAuth = async () => {
       try {
-        const storedAuth = await AsyncStorage.getItem('auth');
+        const storedAuth = await AsyncStorage.getItem("auth");
         if (storedAuth) {
           setAuth(JSON.parse(storedAuth));
         }
       } catch (error) {
-        console.log('No stored auth found.')
+        console.log(`No stored auth found: ${error.message}`);
       }
     };
     loadStoredAuth();
@@ -25,12 +29,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const storeAuth = async () => {
       try {
         if (auth) {
-          await AsyncStorage.setItem('auth',JSON.stringify(auth));
+          await AsyncStorage.setItem("auth", JSON.stringify(auth));
         } else {
-          await AsyncStorage.removeItem('auth');
+          await AsyncStorage.removeItem("auth");
         }
       } catch (error) {
-        console.error('Error storing auth.')
+        console.error(`Error storing auth: ${error.message}`);
       }
     };
     storeAuth();
@@ -44,9 +48,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider.")
+    throw new Error("useAuth must be used within an AuthProvider.");
   }
   return context;
 };

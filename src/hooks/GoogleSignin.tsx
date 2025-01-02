@@ -1,18 +1,18 @@
-import { GoogleSignin, } from '@react-native-google-signin/google-signin';
-import { useAuth } from '../contexts/AuthContext';
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { useAuth } from "../contexts/AuthContext";
 
 const useGoogleSignin = () => {
-  const {setAuth} = useAuth()
+  const { setAuth } = useAuth();
 
   const signIn = async (): Promise<void> => {
     try {
       GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const tokens = await GoogleSignin.getTokens();
-  
+
       setAuth({
         account: userInfo.data.user.email,
-        accessToken: tokens.accessToken
+        accessToken: tokens.accessToken,
       });
     } catch (error) {
       console.error(error);
@@ -29,9 +29,9 @@ const useGoogleSignin = () => {
   };
 
   return {
-    signIn, 
-    signOut
-  }
-}
+    signIn,
+    signOut,
+  };
+};
 
 export default useGoogleSignin;

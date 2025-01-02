@@ -1,49 +1,49 @@
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from "react-native"
-import { useStyles } from "../styles/StylesContext";
+import React, { Modal, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useTheme } from "@react-navigation/native";
+import { CustomAlertProps } from "../types/Props";
 
-const CustomAlert = ({ visible, message, onClose }) => {
+const CustomAlert = ({ visible, message, onClose }: CustomAlertProps) => {
   const { colors } = useTheme();
 
   const styles = StyleSheet.create({
     modalOverlay: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
     modalContainer: {
       width: 300,
       padding: 20,
       backgroundColor: colors.card,
       borderRadius: 10,
-      alignItems: 'center',
+      alignItems: "center",
     },
     modalText: {
-      fontFamily: 'GoogleSans-Regular',
+      fontFamily: "GoogleSans-Regular",
       color: colors.text,
       fontSize: 18,
       marginBottom: 20,
     },
     modalButton: {
-      backgroundColor: '#e91e63',
+      backgroundColor: "#e91e63",
       paddingVertical: 10,
       paddingHorizontal: 20,
       borderRadius: 5,
     },
     modalButtonText: {
-      fontFamily: 'GoogleSans-Bold',
+      fontFamily: "GoogleSans-Bold",
       color: colors.text,
       fontSize: 16,
     },
-  })
+  });
 
   return (
     <Modal
-    transparent={true}
-    animationType="slide"
-    visible={visible}
-    onRequestClose={onClose}
+      transparent={true}
+      animationType="slide"
+      visible={visible}
+      onRequestClose={onClose}
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
@@ -56,7 +56,5 @@ const CustomAlert = ({ visible, message, onClose }) => {
     </Modal>
   );
 };
-
-
 
 export default CustomAlert;

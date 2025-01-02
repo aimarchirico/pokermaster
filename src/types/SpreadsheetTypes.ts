@@ -21,13 +21,13 @@ export interface FetchDataResponse {
 }
 
 export interface SheetData {
-  rows: string[][];
-  error?: string;
+  range: string;
+  majorDimension?: "ROWS" | "COLUMNS";
+  values: string[][];
 }
-
 
 export interface ApiRequest {
   url: string;
-  method?: 'GET' | 'PUT' | 'POST';
-  data?: any;
+  method?: "GET" | "PUT" | "POST";
+  data?: SheetData;
 }

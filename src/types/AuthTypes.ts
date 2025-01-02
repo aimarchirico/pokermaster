@@ -1,5 +1,5 @@
 export interface GoogleAuth {
-  account: string,
+  account: string;
   accessToken: string;
   spreadsheetId?: string;
   spreadsheetName?: string;

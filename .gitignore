@@ -35,5 +35,6 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-# android
+# Google client ID
+src/assets/clientId.ts
 

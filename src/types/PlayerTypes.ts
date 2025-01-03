@@ -13,6 +13,12 @@ export interface PlayerAddProps {
   resetTrigger: number;
 }
 
+export interface PlayerUpdateProps {
+  player: Player;
+  defaultValue: number;
+  onAmountChange: (amount: number) => void;
+}
+
 export interface PlayersContextType {
   players: Player[];
   setPlayers: (players: Player[] | []) => void;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,11 +11,14 @@ import { usePlayers } from "../contexts/PlayersContext";
 import { AmountData, Player } from "../types/PlayerTypes";
 import useGoogleSheets from "../hooks/GoogleSheets";
 import { useStyles } from "../styles/StylesContext";
-import CustomAlert from "../components/CustomAlert";
+import { CustomAlert } from "../components/CustomModals";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import RootTabParamList from "../types/RootTabParamList";
+import * as Clipboard from "expo-clipboard";
+import { useBuyin } from "../contexts/BuyinContext";
+import { useAuth } from "../contexts/AuthContext";
 
-export const AddScreen = () => {
+const AddScreen = () => {
   const { players, setPlayers } = usePlayers();
   const [inputAmounts, setInputAmounts] = useState<{
     [key: string]: AmountData;
@@ -26,6 +29,8 @@ export const AddScreen = () => {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const navigation = useNavigation<NavigationProp<RootTabParamList>>();
+  const { buyin } = useBuyin();
+  const { auth } = useAuth();
 
   const handleAmountChange = (type: string, name: string, amount: number) => {
     setInputAmounts((prev) => ({
@@ -44,6 +49,21 @@ export const AddScreen = () => {
       0;
   };
 
+  useEffect(() => {
+    if (!players) return;
+
+    setInputAmounts((prev) => {
+      const updated = { ...prev };
+      players.forEach((player) => {
+        updated[player.name] = {
+          end: updated[player.name]?.end || 0,
+          start: parseFloat(buyin) || 0,
+        };
+      });
+      return updated;
+    });
+  }, [buyin, players]);
+
   const handleConfirm = () => {
     try {
       const data = players.map(
@@ -56,6 +76,12 @@ export const AddScreen = () => {
         throw Error(`Sum equals ${sum}. Please ensure sum equals zero.`);
       }
       appendData(data.map((value) => value.toString()));
+
+      const clipboardText =
+        players.map((player, i) => `${player.name}: ${data[i]}`).join("\n") +
+        `\nhttps://docs.google.com/spreadsheets/d/${auth?.spreadsheetId}`;
+      Clipboard.setStringAsync(clipboardText);
+
       const updatedPlayers = [...players];
       updatedPlayers.forEach((player) => {
         updateBalance(player);
@@ -135,3 +161,5 @@ export const AddScreen = () => {
     </View>
   );
 };
+
+export default AddScreen;

@@ -1,20 +1,22 @@
 import React from "react";
-import { NavigationContainer, DarkTheme } from "@react-navigation/native";
+import { NavigationContainer, DarkTheme, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { AddScreen } from "./src/screens/AddScreen";
-import { TotalScreen } from "./src/screens/TotalScreen";
+import AddScreen from "./src/screens/AddScreen";
+import TotalScreen from "./src/screens/TotalScreen";
 import RootTabParamList from "./src/types/RootTabParamList";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import { PlayersProvider } from "./src/contexts/PlayersContext";
-import { LoginScreen } from "./src/screens/LoginScreen";
+import LoginScreen from "./src/screens/LoginScreen";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import * as SplashScreen from 'expo-splash-screen';
+import * as SplashScreen from "expo-splash-screen";
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";;
+import { StyleSheet } from "react-native";
 import { useStyles, StylesProvider } from "./src/styles/StylesContext";
 import { getISOWeekNumber } from "./src/utils/dateUtils";
-import clientId from "./src/assets/clientId"
+import clientId from "./src/assets/clientId";
+import { BuyinProvider } from "./src/contexts/BuyinContext";
+import HistoryScreen from "./src/screens/HistoryScreen";
 
 const CustomDarkTheme = {
   ...DarkTheme,
@@ -25,6 +27,7 @@ const CustomDarkTheme = {
     card: "#1E1E1E",
     text: "#FFFFFF",
     border: "#2C2C2C",
+    notification: "#e91e63"
   },
 };
 
@@ -36,6 +39,7 @@ GoogleSignin.configure({
     "https://www.googleapis.com/auth/drive",
   ],
   webClientId: clientId,
+  offlineAccess: true,
 });
 
 SplashScreen.preventAutoHideAsync();
@@ -43,6 +47,8 @@ SplashScreen.preventAutoHideAsync();
 const MainApp = () => {
   const { auth } = useAuth();
   const { globalStyles } = useStyles();
+  const { colors } = useTheme();
+  
 
   return (
     <>
@@ -50,7 +56,7 @@ const MainApp = () => {
       <Tab.Navigator
         id="navigatorID"
         screenOptions={{
-          tabBarActiveTintColor: "#e91e63",
+          tabBarActiveTintColor: colors.notification,
           tabBarInactiveTintColor: "gray",
           tabBarLabelStyle: StyleSheet.compose(
             globalStyles.text,
@@ -60,6 +66,9 @@ const MainApp = () => {
             globalStyles.text,
             globalStyles.header
           ),
+          tabBarStyle: {
+            height: 52,
+          },
         }}
       >
         <Tab.Screen
@@ -75,6 +84,19 @@ const MainApp = () => {
           }}
         />
         <Tab.Screen
+          name="History"
+          component={
+            auth?.accessToken && auth?.spreadsheetId
+              ? HistoryScreen
+              : LoginScreen
+          }
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="time" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
           name="Total"
           component={
             auth?.accessToken && auth?.spreadsheetId ? TotalScreen : LoginScreen
@@ -86,11 +108,11 @@ const MainApp = () => {
           }}
         />
         <Tab.Screen
-          name="Account"
+          name="Settings"
           component={LoginScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="person" size={size} color={color} />
+              <Ionicons name="settings" size={size} color={color} />
             ),
           }}
         />
@@ -104,9 +126,11 @@ export default function App() {
     <NavigationContainer theme={CustomDarkTheme}>
       <StylesProvider>
         <PlayersProvider>
-          <AuthProvider>
-            <MainApp />
-          </AuthProvider>
+          <BuyinProvider>
+            <AuthProvider>
+              <MainApp />
+            </AuthProvider>
+          </BuyinProvider>
         </PlayersProvider>
       </StylesProvider>
     </NavigationContainer>

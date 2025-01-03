@@ -12,7 +12,7 @@ import { usePlayers } from "../contexts/PlayersContext";
 import { useStyles } from "../styles/StylesContext";
 import { useAuth } from "../contexts/AuthContext";
 
-export const TotalScreen = () => {
+const TotalScreen = () => {
   const { players } = usePlayers();
   const { globalStyles } = useStyles();
   const { auth } = useAuth();
@@ -70,3 +70,5 @@ export const TotalScreen = () => {
     </View>
   );
 };
+
+export default TotalScreen;

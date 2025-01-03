@@ -5,7 +5,10 @@ type RootTabParamList = {
   Total: {
     object;
   };
-  Account: {
+  History: {
+    object;
+  };
+  Settings: {
     object;
   };
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { PlayerAddProps } from "../types/PlayerTypes";
 import { useStyles } from "../styles/StylesContext";
+import { useBuyin } from "../contexts/BuyinContext";
 
 const PlayerAdd = ({
   player,
@@ -10,11 +11,16 @@ const PlayerAdd = ({
 }: PlayerAddProps) => {
   const [startValue, setStartValue] = useState("0");
   const [endValue, setEndValue] = useState("0");
+  const {buyin} = useBuyin();
 
   useEffect(() => {
-    setStartValue("");
+    setStartValue(buyin);
     setEndValue("");
   }, [resetTrigger]);
+
+  useEffect(() => {
+    setStartValue(buyin)
+  }, [buyin])
 
   const handleStartChange = (text: string) => {
     setStartValue(text);

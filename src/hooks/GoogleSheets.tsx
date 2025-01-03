@@ -7,20 +7,27 @@ import {
   FetchDataResponse,
   Sheet,
   ApiRequest,
+  CreateSpreadsheetResponse,
 } from "../types/SpreadsheetTypes";
 import { GoogleAuth } from "../types/AuthTypes";
 import { getISOWeekNumber } from "../utils/dateUtils";
 import { usePlayers } from "../contexts/PlayersContext";
+import useGoogleSignin from "./GoogleSignin";
 
 const useGoogleSheets = () => {
   const { auth, setAuth } = useAuth();
   const [spreadsheets, setSpreadsheets] = useState<Spreadsheet[]>([]);
   const { setPlayers } = usePlayers();
+  const { isTokenExpired, refreshToken } = useGoogleSignin();
 
   const request = async ({ url, method = "GET", data }: ApiRequest) => {
     if (!auth?.accessToken) {
       throw Error("User is not signed in.");
     }
+    if (isTokenExpired()) {
+      refreshToken();
+    }
+    
     const response = await fetch(`${url}`, {
       method,
       headers: {
@@ -35,6 +42,30 @@ const useGoogleSheets = () => {
     }
     return response.json();
   };
+
+  const createSpreadsheet = async (cols: number, name: string = 'Untitled spreadsheet'): Promise<string> => {
+    const response: CreateSpreadsheetResponse = await request({
+      url: 'https://sheets.googleapis.com/v4/spreadsheets',
+      method: 'POST',
+      data: {
+        properties: {
+          title: name,
+        },
+        sheets: [
+          {
+            properties: {
+              title: 'input',
+              gridProperties: {
+                columnCount: cols,
+                rowCount: 1000
+              }
+            }
+          }
+        ]
+      }
+    });
+    return response.spreadsheetId;
+  }
 
   const fetchSpreadsheets = async (filter: string = ""): Promise<void> => {
     const query = encodeURIComponent(
@@ -148,6 +179,7 @@ const useGoogleSheets = () => {
 
   return {
     spreadsheets,
+    createSpreadsheet,
     fetchSpreadsheets,
     selectSpreadsheet,
     fetchData,

@@ -4,7 +4,7 @@ PokerMaster Pro is a React Native app built with Expo, designed to manage poker 
 
 <p align="left">
 <img width=150 src=screenshots/Add.png/>
-<img width=150 src=screenshots/Total.png/>
+<img width=150 src=screenshots/History.png/>
 <img width=150 src=screenshots/Total.png/>
 <img width=150 src=screenshots/Settings.png/>
 </p>

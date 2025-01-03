@@ -23,6 +23,7 @@ export const StylesProvider = ({ children }: StylesProviderProps) => {
       backgroundColor: colors.card,
       flexDirection: "row",
       marginVertical: 6,
+      paddingHorizontal: 30,
       borderRadius: 5,
       height: 65,
       padding: 16,
@@ -37,6 +38,7 @@ export const StylesProvider = ({ children }: StylesProviderProps) => {
     },
     smallText: {
       fontSize: 10,
+      fontFamily: "GoogleSans-Bold",
     },
     header: {
       fontFamily: "GoogleSans-Bold",
@@ -46,6 +48,7 @@ export const StylesProvider = ({ children }: StylesProviderProps) => {
     },
     buttonText: {
       textAlign: "center",
+      fontFamily: "GoogleSans-Bold",
     },
     input: {
       borderColor: colors.border,
@@ -63,6 +66,49 @@ export const StylesProvider = ({ children }: StylesProviderProps) => {
     rightSubheader: {
       fontSize: 14,
       textAlign: "right",
+    },
+    list: {
+      width: "100%",
+    },
+    listItem: {
+      height: 65,
+      width: "100%",
+    },
+    listText: {
+      fontSize: 16,
+    },
+    modalOverlay: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    modalContainer: {
+      width: 300,
+      padding: 20,
+      backgroundColor: colors.card,
+      borderRadius: 10,
+      alignItems: "center",
+    },
+    modalButtonText: {
+      fontFamily: "GoogleSans-Bold",
+      color: colors.text,
+      fontSize: 16,
+    },
+    modalText: {
+      fontFamily: "GoogleSans-Regular",
+      color: colors.text,
+      fontSize: 18,
+      marginBottom: 20,
+    },
+    modalButton: {
+      backgroundColor: colors.notification,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      marginHorizontal: 10,
+      borderRadius: 5,
+      alignItems: 'center',
+      flexGrow: 1
     },
   });
 

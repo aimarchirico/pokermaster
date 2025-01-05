@@ -26,8 +26,12 @@ export const StylesProvider = ({ children }: StylesProviderProps) => {
       paddingHorizontal: 30,
       borderRadius: 5,
       height: 65,
-      padding: 16,
       alignItems: "center",
+      width: '100%'
+    },
+    button: {
+      backgroundColor: colors.notification,
+      borderRadius: 20,
     },
     text: {
       fontFamily: "GoogleSans-Regular",
@@ -35,6 +39,8 @@ export const StylesProvider = ({ children }: StylesProviderProps) => {
       fontSize: 16,
       flex: 1,
       width: "100%",
+      height: "100%",
+      verticalAlign: "middle",
     },
     smallText: {
       fontSize: 10,
@@ -56,26 +62,21 @@ export const StylesProvider = ({ children }: StylesProviderProps) => {
       borderWidth: 2,
       borderRadius: 5,
       padding: 10,
-      height: 40,
+      height: 45,
       textAlign: "right",
-      margin: 10,
+      marginLeft: 15,
+    },
+    subheaderCard: {
+      backgroundColor: colors.border,
+      height: 50,
     },
     subheader: {
-      fontSize: 14,
+      fontFamily: "GoogleSans-Bold",
     },
     rightSubheader: {
-      fontSize: 14,
-      textAlign: "right",
-    },
-    list: {
-      width: "100%",
-    },
-    listItem: {
-      height: 65,
-      width: "100%",
-    },
-    listText: {
-      fontSize: 16,
+      flexGrow: 0.7,
+      textAlign: "center",
+      marginLeft: 20,
     },
     modalOverlay: {
       flex: 1,
@@ -106,9 +107,9 @@ export const StylesProvider = ({ children }: StylesProviderProps) => {
       paddingVertical: 10,
       paddingHorizontal: 20,
       marginHorizontal: 10,
-      borderRadius: 5,
-      alignItems: 'center',
-      flexGrow: 1
+      borderRadius: 20,
+      alignItems: "center",
+      flexGrow: 1,
     },
   });
 

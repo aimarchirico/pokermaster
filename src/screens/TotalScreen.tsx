@@ -26,13 +26,6 @@ const TotalScreen = () => {
     }
   };
 
-  const styles = StyleSheet.create({
-    subheaderCard: {
-      justifyContent: "space-between",
-      height: 50,
-    },
-  });
-
   return (
     <View
       style={StyleSheet.compose(
@@ -40,17 +33,23 @@ const TotalScreen = () => {
         globalStyles.flexContainer
       )}
     >
-      <View style={StyleSheet.compose(globalStyles.card, styles.subheaderCard)}>
+      <View
+        style={StyleSheet.compose(
+          globalStyles.card,
+          globalStyles.subheaderCard
+        )}
+      >
         <Text
           style={StyleSheet.compose(globalStyles.text, globalStyles.subheader)}
         >
           Name
         </Text>
         <Text
-          style={StyleSheet.compose(
+          style={[
             globalStyles.text,
-            globalStyles.rightSubheader
-          )}
+            globalStyles.subheader,
+            globalStyles.rightSubheader,
+          ]}
         >
           Total
         </Text>
@@ -60,7 +59,10 @@ const TotalScreen = () => {
           <PlayerTotal key={player.name} player={player} />
         ))}
       </ScrollView>
-      <TouchableOpacity style={globalStyles.card} onPress={handleOpen}>
+      <TouchableOpacity
+        style={[globalStyles.card, globalStyles.button]}
+        onPress={handleOpen}
+      >
         <Text
           style={StyleSheet.compose(globalStyles.text, globalStyles.buttonText)}
         >

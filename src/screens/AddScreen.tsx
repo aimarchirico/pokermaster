@@ -12,7 +12,10 @@ import { AmountData, Player } from "../types/PlayerTypes";
 import useGoogleSheets from "../hooks/GoogleSheets";
 import { useStyles } from "../styles/StylesContext";
 import { CustomAlert } from "../components/CustomModals";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import {
+  NavigationProp,
+  useNavigation,
+} from "@react-navigation/native";
 import RootTabParamList from "../types/RootTabParamList";
 import * as Clipboard from "expo-clipboard";
 import { useBuyin } from "../contexts/BuyinContext";
@@ -96,13 +99,6 @@ const AddScreen = () => {
     }
   };
 
-  const styles = StyleSheet.create({
-    subheaderCard: {
-      height: 50,
-      paddingRight: 40,
-    },
-  });
-
   return (
     <View
       style={StyleSheet.compose(
@@ -110,25 +106,32 @@ const AddScreen = () => {
         globalStyles.flexContainer
       )}
     >
-      <View style={StyleSheet.compose(globalStyles.card, styles.subheaderCard)}>
+      <View
+        style={StyleSheet.compose(
+          globalStyles.card,
+          globalStyles.subheaderCard
+        )}
+      >
         <Text
           style={StyleSheet.compose(globalStyles.text, globalStyles.subheader)}
         >
           Name
         </Text>
         <Text
-          style={StyleSheet.compose(
+          style={[
             globalStyles.text,
-            globalStyles.rightSubheader
-          )}
+            globalStyles.subheader,
+            globalStyles.rightSubheader,
+          ]}
         >
           Start
         </Text>
         <Text
-          style={StyleSheet.compose(
+          style={[
             globalStyles.text,
-            globalStyles.rightSubheader
-          )}
+            globalStyles.subheader,
+            globalStyles.rightSubheader,
+          ]}
         >
           End
         </Text>
@@ -146,7 +149,10 @@ const AddScreen = () => {
           />
         ))}
       </ScrollView>
-      <TouchableOpacity style={globalStyles.card} onPress={handleConfirm}>
+      <TouchableOpacity
+        style={[globalStyles.card, globalStyles.button]}
+        onPress={handleConfirm}
+      >
         <Text
           style={StyleSheet.compose(globalStyles.text, globalStyles.buttonText)}
         >

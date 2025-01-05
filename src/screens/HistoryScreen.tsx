@@ -5,7 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { useStyles } from "../styles/StylesContext";
 import { usePlayers } from "../contexts/PlayersContext";
@@ -15,7 +15,11 @@ import useGoogleSheets from "../hooks/GoogleSheets";
 
 import * as Clipboard from "expo-clipboard";
 import { Player } from "../types/PlayerTypes";
-import { NavigationProp, useNavigation, useTheme } from "@react-navigation/native";
+import {
+  NavigationProp,
+  useNavigation,
+  useTheme,
+} from "@react-navigation/native";
 import RootTabParamList from "../types/RootTabParamList";
 import { useAuth } from "../contexts/AuthContext";
 import { useFocusEffect } from "@react-navigation/native";
@@ -126,18 +130,6 @@ const HistoryScreen = () => {
     }
   };
 
-  const styles = StyleSheet.create({
-    subheaderCard: {
-      justifyContent: "space-between",
-      height: 50,
-    },
-    rightSubheader: {
-      fontSize: 14,
-      textAlign: "right",
-      marginRight: 20,
-    },
-  });
-
   return (
     <View
       style={StyleSheet.compose(
@@ -156,7 +148,7 @@ const HistoryScreen = () => {
               <View
                 style={StyleSheet.compose(
                   globalStyles.card,
-                  styles.subheaderCard
+                  globalStyles.subheaderCard
                 )}
               >
                 <Text
@@ -168,10 +160,11 @@ const HistoryScreen = () => {
                   Name
                 </Text>
                 <Text
-                  style={StyleSheet.compose(
+                  style={[
                     globalStyles.text,
-                    styles.rightSubheader
-                  )}
+                    globalStyles.subheader,
+                    globalStyles.rightSubheader,
+                  ]}
                 >
                   Profit
                 </Text>
@@ -189,7 +182,7 @@ const HistoryScreen = () => {
                 ))}
               </ScrollView>
               <TouchableOpacity
-                style={globalStyles.card}
+                style={[globalStyles.card, globalStyles.button]}
                 onPress={handleConfirm}
               >
                 <Text

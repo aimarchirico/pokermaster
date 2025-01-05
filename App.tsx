@@ -1,5 +1,9 @@
 import React from "react";
-import { NavigationContainer, DarkTheme, useTheme } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  DarkTheme,
+  useTheme,
+} from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AddScreen from "./src/screens/AddScreen";
 import TotalScreen from "./src/screens/TotalScreen";
@@ -8,7 +12,6 @@ import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import { PlayersProvider } from "./src/contexts/PlayersContext";
 import LoginScreen from "./src/screens/LoginScreen";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import * as SplashScreen from "expo-splash-screen";
 import { Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
@@ -27,7 +30,7 @@ const CustomDarkTheme = {
     card: "#1E1E1E",
     text: "#FFFFFF",
     border: "#2C2C2C",
-    notification: "#e91e63"
+    notification: "#d72f48",
   },
 };
 
@@ -42,13 +45,10 @@ GoogleSignin.configure({
   offlineAccess: true,
 });
 
-SplashScreen.preventAutoHideAsync();
-
 const MainApp = () => {
   const { auth } = useAuth();
   const { globalStyles } = useStyles();
   const { colors } = useTheme();
-  
 
   return (
     <>
@@ -67,7 +67,7 @@ const MainApp = () => {
             globalStyles.header
           ),
           tabBarStyle: {
-            height: 52,
+            height: 53,
           },
         }}
       >

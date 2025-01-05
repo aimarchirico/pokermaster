@@ -7,6 +7,7 @@ const PlayerTotal = ({ player }: PlayerTotalProps) => {
 
   const styles = StyleSheet.create({
     balance: {
+      marginHorizontal: 40,
       textAlign: "right",
     },
   });

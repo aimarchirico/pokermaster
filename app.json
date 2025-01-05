@@ -22,7 +22,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/icons/app-icon.png",
-        "backgroundColor": "#e8001a"
+        "backgroundColor": "#d72f48"
       },
       "package": "com.aimar.pokermasterpro"
     },

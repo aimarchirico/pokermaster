@@ -71,18 +71,12 @@ const SpreadsheetPicker = ({ setShowPicker }: SpreadsheetPickerProps) => {
       ) : (
         <>
           <FlatList
-            contentContainerStyle={StyleSheet.compose(
-              globalStyles.container,
-              globalStyles.list
-            )}
+            contentContainerStyle={globalStyles.container}
             data={spreadsheets}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <TouchableOpacity
-                style={StyleSheet.compose(
-                  globalStyles.card,
-                  globalStyles.listItem
-                )}
+                style={globalStyles.card}
                 onPress={() => handleSelectSpreadsheet(item.id, item.name)}
               >
                 <Text

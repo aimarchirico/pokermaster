@@ -14,8 +14,12 @@ _Add, history, total and settings screen._
 ## Features
 - Login with Google
 - Select a target Google Spreadsheet
+- create a new Google Spreadsheet
+- Set default buy-in amount
 - Add start and end amounts for each player
-- Automatically update the sheet and track balances
+- Automatically update the sheet and track totals
+- View history of previous entries
+- Edit previous entries
 - View totals in a separate screen
 
 ## Requirements

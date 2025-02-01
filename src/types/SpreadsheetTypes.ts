@@ -42,7 +42,9 @@ export interface SpreadsheetData {
 }
 
 export interface ApiRequest {
+  retryOnError?: boolean;
   url: string;
   method?: "GET" | "PUT" | "POST";
   data?: SheetData | SpreadsheetData;
+  token?: string;
 }

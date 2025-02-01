@@ -13,7 +13,6 @@ const useGoogleSignin = () => {
       setAuth({
         account: userInfo.data.user.email,
         accessToken: tokens.accessToken,
-        expirationTime: new Date().getTime() + 3600 * 1000,
       });
     } catch (error) {
       console.error(error);
@@ -29,30 +28,24 @@ const useGoogleSignin = () => {
     }
   };
 
-  const isTokenExpired = () => {
-    if (!auth?.expirationTime) return true;
-    return new Date().getTime() > auth.expirationTime;
-  };
-
   const refreshToken = async () => {
     try {
+      GoogleSignin.clearCachedAccessToken(auth.accessToken);
       const { accessToken } = await GoogleSignin.getTokens();
-      setAuth({
+      const newAuth = {
         ...auth,
-        accessToken,
-        expirationTime: new Date().getTime() + 3600 * 1000,
-      });
-      console.log("refreshing token now");
+        accessToken
+      }
+      setAuth(newAuth);
+      return accessToken;
     } catch (error) {
       console.error(error);
-      await signIn();
     }
   };
 
   return {
     signIn,
     signOut,
-    isTokenExpired,
     refreshToken,
   };
 };

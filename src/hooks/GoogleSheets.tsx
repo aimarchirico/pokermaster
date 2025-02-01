@@ -18,27 +18,28 @@ const useGoogleSheets = () => {
   const { auth, setAuth } = useAuth();
   const [spreadsheets, setSpreadsheets] = useState<Spreadsheet[]>([]);
   const { setPlayers } = usePlayers();
-  const { isTokenExpired, refreshToken } = useGoogleSignin();
+  const { refreshToken } = useGoogleSignin();
 
-  const request = async ({ url, method = "GET", data }: ApiRequest) => {
-    if (!auth?.accessToken) {
+  const request = async ({ retryOnError = true, url, method = "GET", data, token = auth?.accessToken}: ApiRequest) => {
+    if (!token) {
       throw Error("User is not signed in.");
-    }
-    if (isTokenExpired()) {
-      refreshToken();
     }
     
     const response = await fetch(`${url}`, {
       method,
       headers: {
-        Authorization: `Bearer ${auth.accessToken}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       ...(data && { body: JSON.stringify(data) }),
     });
     if (!response.ok) {
-      console.log(response);
-      throw Error(`API Error: ${response.statusText}`);
+      if (!retryOnError) {
+        console.log(response);
+        throw Error(`API Error: ${response.statusText}`);
+      }
+      const newToken = await refreshToken();
+      return request({retryOnError: false, url, method, data, token: newToken}); 
     }
     return response.json();
   };

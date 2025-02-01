@@ -1,7 +1,6 @@
 export interface GoogleAuth {
   account: string;
   accessToken: string;
-  expirationTime: number;
   spreadsheetId?: string;
   spreadsheetName?: string;
 }

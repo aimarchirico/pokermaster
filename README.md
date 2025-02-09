@@ -34,5 +34,5 @@ _Add, history, total and settings screen._
 3. Add your Google credentials (client ID) to `src/assets/clientId.ts`.
 
 ## Usage
-1. To package apk file for android, run: `./gradlew :app:assembleRelease` from `android` folder.
+1. To package apk file for Android, run: `./gradlew :app:assembleRelease` from `android` folder.
 2. The apk file can be found in `android\app\build\outputs\apk\release`.

@@ -17,7 +17,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 import { useStyles, StylesProvider } from "./src/styles/StylesContext";
 import { getISOWeekNumber } from "./src/utils/dateUtils";
-import clientId from "./src/assets/clientId";
+import CLIENT_ID from "./src/assets/clientId";
 import { BuyinProvider } from "./src/contexts/BuyinContext";
 import HistoryScreen from "./src/screens/HistoryScreen";
 
@@ -41,7 +41,7 @@ GoogleSignin.configure({
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive",
   ],
-  webClientId: clientId,
+  webClientId: CLIENT_ID,
   offlineAccess: true,
 });
 

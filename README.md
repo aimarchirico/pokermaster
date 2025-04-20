@@ -31,7 +31,7 @@ _Add, history, total and settings screen._
 ## Installation
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Add your Google credentials (client ID) to `src/assets/clientId.ts`.
+3. Add your Google Cloud credentials (client ID) to `.env`.
 
 ## Usage
 1. To package apk file for Android, run: `./gradlew :app:assembleRelease` from `android` folder.

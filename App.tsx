@@ -17,7 +17,6 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 import { useStyles, StylesProvider } from "./src/styles/StylesContext";
 import { getISOWeekNumber } from "./src/utils/dateUtils";
-import CLIENT_ID from "./src/assets/clientId";
 import { BuyinProvider } from "./src/contexts/BuyinContext";
 import HistoryScreen from "./src/screens/HistoryScreen";
 
@@ -36,12 +35,14 @@ const CustomDarkTheme = {
 
 const Tab = createBottomTabNavigator<RootTabParamList, "navigatorID">();
 
+const clientId = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID;
+
 GoogleSignin.configure({
   scopes: [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive",
   ],
-  webClientId: CLIENT_ID,
+  webClientId: clientId,
   offlineAccess: true,
 });
 

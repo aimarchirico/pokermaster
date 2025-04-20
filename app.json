@@ -33,6 +33,17 @@
       "eas": {
         "projectId": "b59f0a42-e52a-4e52-b991-a51c1e8bdefd"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./src/assets/fonts/GoogleSans-Regular.ttf",
+            "./src/assets/fonts/GoogleSans-Bold.ttf"
+          ]
+        }
+      ]
+    ]
   }
 }

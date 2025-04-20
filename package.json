@@ -1,7 +1,7 @@
 {
-  "name": "pokermasterpro",
+  "name": "pokermaster",
   "license": "0BSD",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
@@ -22,7 +22,7 @@
     "expo-status-bar": "~2.0.0",
     "expo-system-ui": "^4.0.6",
     "googleapis": "^144.0.0",
-    "pokermasterpro": "file:",
+    "pokermaster": "file:",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.76.5",

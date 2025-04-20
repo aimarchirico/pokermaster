@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "PokerMaster Pro",
-    "slug": "PokerMasterPro",
-    "version": "1.0.0",
+    "name": "PokerMaster",
+    "slug": "PokerMaster",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icons/app-icon.png",
     "userInterfaceStyle": "light",
@@ -24,7 +24,7 @@
         "foregroundImage": "./src/assets/icons/app-icon.png",
         "backgroundColor": "#d72f48"
       },
-      "package": "com.aimar.pokermasterpro"
+      "package": "no.chirico.pm"
     },
     "web": {
       "favicon": "./src/assets/icons/app-icon.png"

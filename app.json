@@ -24,7 +24,7 @@
         "foregroundImage": "./src/assets/icons/app-icon.png",
         "backgroundColor": "#d72f48"
       },
-      "package": "no.chirico.pm"
+      "package": "no.chirico.pokermaster"
     },
     "web": {
       "favicon": "./src/assets/icons/app-icon.png"

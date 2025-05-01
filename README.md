@@ -1,6 +1,7 @@
 # PokerMaster
 
 PokerMaster is a React Native app built with Expo, designed to manage poker balances and synchronize data with Google Sheets. This makes it easy to track players, input game results, and keep a running total of balances in real time.
+Install the latest release from GitHub to start using the app now!
 
 <p align="left">
 <img width=150 src=screenshots/Add.png/>

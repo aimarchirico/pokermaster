@@ -1,8 +1,6 @@
 export interface GoogleAuth {
   account: string;
   accessToken: string;
-  spreadsheetId?: string;
-  spreadsheetName?: string;
 }
 
 export interface AuthContextType {

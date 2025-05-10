@@ -17,7 +17,7 @@ import useGoogleSheets from "../hooks/GoogleSheets";
 import { CustomAlert, CustomInput } from "../components/CustomModals";
 
 const LoginScreen = () => {
-  const { signIn, signOut } = useGoogleSignin();
+  const { signIn, signOut, requestSheetsAndDriveAccess } = useGoogleSignin(); // Ensure requestSheetsAndDriveAccess is destructured
   const { auth } = useAuth();
   const { globalStyles } = useStyles();
   const [showPicker, setShowPicker] = useState(false);
@@ -125,6 +125,7 @@ const LoginScreen = () => {
       {isLoading ? (
         <ActivityIndicator size="large" color={colors.notification} />
       ) : !auth ? (
+        <>
         <TouchableOpacity
           style={StyleSheet.compose(globalStyles.card, globalStyles.button)}
           onPress={signIn}
@@ -138,6 +139,21 @@ const LoginScreen = () => {
             Sign in with Google
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={StyleSheet.compose(globalStyles.card, globalStyles.button)}
+          onPress={requestSheetsAndDriveAccess}
+        >
+          <Text
+            style={StyleSheet.compose(
+              globalStyles.text,
+              globalStyles.buttonText
+            )}
+          >
+            Authorize Sheets Access
+          </Text>
+        </TouchableOpacity>
+        </>
       ) : showPicker ? (
         <SpreadsheetPicker setShowPicker={setShowPicker} />
       ) : (

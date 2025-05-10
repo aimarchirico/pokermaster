@@ -9,13 +9,14 @@ import {
   ApiRequest,
   CreateSpreadsheetResponse,
 } from "../types/SpreadsheetTypes";
-import { GoogleAuth } from "../types/AuthTypes";
 import { getISOWeekNumber } from "../utils/dateUtils";
 import { usePlayers } from "../contexts/PlayersContext";
 import useGoogleSignin from "./GoogleSignin";
+import { useSpreadsheet } from "../contexts/SpreadsheetContext";
 
 const useGoogleSheets = () => {
-  const { auth, setAuth } = useAuth();
+  const { auth } = useAuth();
+  const { spreadsheet, setSpreadsheet } = useSpreadsheet();
   const [spreadsheets, setSpreadsheets] = useState<Spreadsheet[]>([]);
   const { setPlayers } = usePlayers();
   const { refreshToken } = useGoogleSignin();
@@ -65,6 +66,7 @@ const useGoogleSheets = () => {
         ]
       }
     });
+    setSpreadsheet({ id: response.spreadsheetId, name: name });
     return response.spreadsheetId;
   }
 
@@ -79,20 +81,20 @@ const useGoogleSheets = () => {
   };
 
   const fetchSheets = async (
-    spreadsheetId: string = auth?.spreadsheetId
+    currentSpreadsheetId: string = spreadsheet?.id 
   ): Promise<Sheet[]> => {
     const response: FetchSheetsResponse = await request({
-      url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`,
+      url: `https://sheets.googleapis.com/v4/spreadsheets/${currentSpreadsheetId}`,
     });
     return response.sheets || [];
   };
 
   const fetchData = async (
     range: string,
-    spreadsheetId: string = auth?.spreadsheetId
+    currentSpreadsheetId: string = spreadsheet?.id
   ): Promise<string[][]> => {
     const response: FetchDataResponse = await request({
-      url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/input!${range}?valueRenderOption=FORMULA`,
+      url: `https://sheets.googleapis.com/v4/spreadsheets/${currentSpreadsheetId}/values/input!${range}?valueRenderOption=FORMULA`,
     });
     return response.values || [];
   };
@@ -100,11 +102,11 @@ const useGoogleSheets = () => {
   const postData = async (
     range: string,
     values: string[][],
-    spreadsheetId: string = auth?.spreadsheetId
+    currentSpreadsheetId: string = spreadsheet?.id
   ): Promise<void> => {
     await request({
       method: "PUT",
-      url: `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/input!${range}?valueInputOption=USER_ENTERED`,
+      url: `https://sheets.googleapis.com/v4/spreadsheets/${currentSpreadsheetId}/values/input!${range}?valueInputOption=USER_ENTERED`,
       data: {
         range: `input!${range}`,
         majorDimension: "ROWS",
@@ -114,30 +116,30 @@ const useGoogleSheets = () => {
   };
 
   const getNextEmptyRow = async (
-    spreadsheetId: string = auth?.spreadsheetId
+    currentSpreadsheetId: string = spreadsheet?.id
   ): Promise<number> => {
-    const response = await fetchData("A:A", spreadsheetId);
+    const response = await fetchData("A:A", currentSpreadsheetId);
     return (response.length || 0) + 1;
   };
 
   const appendData = async (
     data: string[],
-    spreadsheetId: string = auth?.spreadsheetId
+    currentSpreadsheetId: string = spreadsheet?.id
   ): Promise<void> => {
-    const row = await getNextEmptyRow(spreadsheetId);
+    const row = await getNextEmptyRow(currentSpreadsheetId);
     const range = `A${row}:${row}`;
     postData(
       range,
       [[getISOWeekNumber(new Date()).toString(), ...data]],
-      spreadsheetId
+      currentSpreadsheetId
     );
   };
 
   const selectSpreadsheet = async (
-    spreadsheetId: string,
-    spreadsheetName: string
+    newSpreadsheetId: string,
+    newSpreadsheetName: string
   ): Promise<void> => {
-    const sheets = await fetchSheets(spreadsheetId);
+    const sheets = await fetchSheets(newSpreadsheetId);
     const inputSheet = sheets.find(
       (sheet) => sheet.properties.title === "input"
     );
@@ -146,7 +148,7 @@ const useGoogleSheets = () => {
         "Invalid format: Spreadsheet must contain a sheet named input."
       );
     }
-    const response = await fetchData("B1:1000", spreadsheetId);
+    const response = await fetchData("B1:1000", newSpreadsheetId);
     const headers = response[0];
     if (JSON.stringify(headers) !== JSON.stringify(headers.sort())) {
       throw Error(
@@ -164,12 +166,7 @@ const useGoogleSheets = () => {
         `Invalid format: Sum equals ${sum}. Please ensure totals for each column add up to zero.`
       );
     }
-    const updatedAuth: GoogleAuth = {
-      ...auth,
-      spreadsheetId,
-      spreadsheetName,
-    };
-    setAuth(updatedAuth);
+    setSpreadsheet({ id: newSpreadsheetId, name: newSpreadsheetName });
     setPlayers(
       headers.map((name, i) => ({
         name,

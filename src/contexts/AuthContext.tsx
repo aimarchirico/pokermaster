@@ -11,35 +11,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [auth, setAuth] = useState<GoogleAuth | null>(null);
 
-  useEffect(() => {
-    const loadStoredAuth = async () => {
-      try {
-        const storedAuth = await AsyncStorage.getItem("auth");
-        if (storedAuth) {
-          setAuth(JSON.parse(storedAuth));
-        }
-      } catch (error) {
-        console.log(`No stored auth found: ${error.message}`);
-      }
-    };
-    loadStoredAuth();
-  }, []);
-
-  useEffect(() => {
-    const storeAuth = async () => {
-      try {
-        if (auth) {
-          await AsyncStorage.setItem("auth", JSON.stringify(auth));
-        } else {
-          await AsyncStorage.removeItem("auth");
-        }
-      } catch (error) {
-        console.error(`Error storing auth: ${error.message}`);
-      }
-    };
-    storeAuth();
-  }, [auth]);
-
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       {children}

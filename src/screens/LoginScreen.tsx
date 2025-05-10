@@ -15,10 +15,12 @@ import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { BackHandler } from "react-native";
 import useGoogleSheets from "../hooks/GoogleSheets";
 import { CustomAlert, CustomInput } from "../components/CustomModals";
+import { useSpreadsheet } from "../contexts/SpreadsheetContext";
 
 const LoginScreen = () => {
-  const { signIn, signOut, requestSheetsAndDriveAccess } = useGoogleSignin(); // Ensure requestSheetsAndDriveAccess is destructured
+  const { signIn, signOut, requestSheetsAndDriveAccess } = useGoogleSignin(); 
   const { auth } = useAuth();
+  const { spreadsheet } = useSpreadsheet();
   const { globalStyles } = useStyles();
   const [showPicker, setShowPicker] = useState(false);
   const { buyin, setBuyin } = useBuyin();
@@ -124,8 +126,7 @@ const LoginScreen = () => {
       />
       {isLoading ? (
         <ActivityIndicator size="large" color={colors.notification} />
-      ) : !auth ? (
-        <>
+      ) : !auth?.account ? (
         <TouchableOpacity
           style={StyleSheet.compose(globalStyles.card, globalStyles.button)}
           onPress={signIn}
@@ -139,7 +140,7 @@ const LoginScreen = () => {
             Sign in with Google
           </Text>
         </TouchableOpacity>
-
+      ) : !auth.accessToken ? (
         <TouchableOpacity
           style={StyleSheet.compose(globalStyles.card, globalStyles.button)}
           onPress={requestSheetsAndDriveAccess}
@@ -153,20 +154,19 @@ const LoginScreen = () => {
             Authorize Sheets Access
           </Text>
         </TouchableOpacity>
-        </>
       ) : showPicker ? (
         <SpreadsheetPicker setShowPicker={setShowPicker} />
       ) : (
         <>
           <View style={[globalStyles.card, globalStyles.subheaderCard]}>
             <Text style={[globalStyles.text, globalStyles.subheader]}>
-              Account: {auth.account}
+              Account: {auth?.account}
             </Text>
           </View>
-          {auth?.spreadsheetId && (
+          {spreadsheet?.id && (
             <View style={[globalStyles.card, globalStyles.subheaderCard]}>
               <Text style={[globalStyles.text, globalStyles.subheader]}>
-                Spreadsheet: {auth.spreadsheetName}
+                Spreadsheet: {spreadsheet.name}
               </Text>
             </View>
           )}

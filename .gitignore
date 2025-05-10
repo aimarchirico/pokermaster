@@ -39,5 +39,6 @@ yarn-error.*
 # Android build folder
 android/
 
-
+.npmrc
+google-services.json
 

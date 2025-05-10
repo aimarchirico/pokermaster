@@ -10,16 +10,16 @@ import {
 import PlayerTotal from "../components/PlayerTotal";
 import { usePlayers } from "../contexts/PlayersContext";
 import { useStyles } from "../styles/StylesContext";
-import { useAuth } from "../contexts/AuthContext";
+import { useSpreadsheet } from "../contexts/SpreadsheetContext";
 
 const TotalScreen = () => {
   const { players } = usePlayers();
   const { globalStyles } = useStyles();
-  const { auth } = useAuth();
+  const { spreadsheet } = useSpreadsheet();
 
   const handleOpen = async () => {
-    const url = auth?.spreadsheetId
-      ? `https://docs.google.com/spreadsheets/d/${auth.spreadsheetId}`
+    const url = spreadsheet?.id
+      ? `https://docs.google.com/spreadsheets/d/${spreadsheet.id}`
       : null;
     if (url) {
       await Linking.openURL(url);

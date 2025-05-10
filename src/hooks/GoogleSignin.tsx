@@ -9,11 +9,13 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { useState } from 'react';
 import { GoogleAuthProvider, getAuth, signInWithCredential } from '@react-native-firebase/auth';
+import { useSpreadsheet } from "../contexts/SpreadsheetContext";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const useGoogleSignin = () => {
   const { auth, setAuth } = useAuth();
+  const { setSpreadsheet } = useSpreadsheet();
 
   const googleAuthConfig = {
     clientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
@@ -37,15 +39,20 @@ const useGoogleSignin = () => {
       if (!user) {
         throw new Error("User not signed in");
       }
+      let emailAuth = {
+        account: user.user.email,
+        accessToken: null,
+      }
+      setAuth(emailAuth);
       await GoogleSignin.signInSilently();
       const tokens = await GoogleSignin.getTokens();
       console.log(tokens.accessToken)
-      const newAuth = {
-        ...auth,
-        account: user.user.email,
+      const tokenAuth = {
+        ...emailAuth,
         accessToken: tokens.accessToken,
       }
-      setAuth(newAuth);
+      setAuth(tokenAuth);
+      console.log(tokenAuth);
     } catch (error) {
       console.error("Error getting user:", error);
     }
@@ -82,6 +89,7 @@ const useGoogleSignin = () => {
     try {
       await GoogleOneTapSignIn.revokeAccess("");
       setAuth(null);
+      setSpreadsheet({ id: null, name: null });
     } catch (error) {
       console.error("Sign out error:", error);
       throw error;
@@ -97,6 +105,7 @@ const useGoogleSignin = () => {
         accessToken
       }
       setAuth(newAuth);
+      
       return accessToken;
     } catch (error) {
       console.error(error);

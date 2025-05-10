@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   NavigationContainer,
   DarkTheme,
@@ -19,6 +19,7 @@ import { useStyles, StylesProvider } from "./src/styles/StylesContext";
 import { getISOWeekNumber } from "./src/utils/dateUtils";
 import { BuyinProvider } from "./src/contexts/BuyinContext";
 import HistoryScreen from "./src/screens/HistoryScreen";
+import useGoogleSignin from "./src/hooks/GoogleSignin";
 
 const CustomDarkTheme = {
   ...DarkTheme,
@@ -39,17 +40,20 @@ const clientId = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID;
 
 GoogleSignin.configure({
   scopes: [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive",
-  ],
-  webClientId: clientId,
-  offlineAccess: true,
+      'https://www.googleapis.com/auth/spreadsheets',
+      'https://www.googleapis.com/auth/drive',
+    ]
 });
 
 const MainApp = () => {
   const { auth } = useAuth();
   const { globalStyles } = useStyles();
   const { colors } = useTheme();
+  const { getUser } = useGoogleSignin();
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <>

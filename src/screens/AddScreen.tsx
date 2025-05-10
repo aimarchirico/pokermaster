@@ -19,7 +19,7 @@ import {
 import RootTabParamList from "../types/RootTabParamList";
 import * as Clipboard from "expo-clipboard";
 import { useBuyin } from "../contexts/BuyinContext";
-import { useAuth } from "../contexts/AuthContext";
+import { useSpreadsheet } from "../contexts/SpreadsheetContext";
 
 const AddScreen = () => {
   const { players, setPlayers } = usePlayers();
@@ -33,7 +33,7 @@ const AddScreen = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const navigation = useNavigation<NavigationProp<RootTabParamList>>();
   const { buyin } = useBuyin();
-  const { auth } = useAuth();
+  const { spreadsheet } = useSpreadsheet();
 
   const handleAmountChange = (type: string, name: string, amount: number) => {
     setInputAmounts((prev) => ({
@@ -82,7 +82,7 @@ const AddScreen = () => {
 
       const clipboardText =
         players.map((player, i) => `${player.name}: ${data[i]}`).join("\n") +
-        `\nhttps://docs.google.com/spreadsheets/d/${auth?.spreadsheetId}`;
+        `\nhttps://docs.google.com/spreadsheets/d/${spreadsheet?.id}`;
       Clipboard.setStringAsync(clipboardText);
 
       const updatedPlayers = [...players];

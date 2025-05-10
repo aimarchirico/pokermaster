@@ -2,7 +2,8 @@
   "expo": {
     "name": "PokerMaster",
     "slug": "PokerMaster",
-    "version": "2.0.0",
+    "version": "3.0.0",
+    "scheme": "no.chirico.pokermaster",
     "orientation": "portrait",
     "icon": "./src/assets/icons/app-icon.png",
     "userInterfaceStyle": "light",

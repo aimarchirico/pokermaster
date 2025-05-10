@@ -21,7 +21,7 @@ import {
   useTheme,
 } from "@react-navigation/native";
 import RootTabParamList from "../types/RootTabParamList";
-import { useAuth } from "../contexts/AuthContext";
+import { useSpreadsheet } from "../contexts/SpreadsheetContext";
 import { useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
 import { ActivityIndicator } from "react-native";
@@ -32,7 +32,7 @@ const HistoryScreen = () => {
   const { globalStyles } = useStyles();
   const [showPicker, setShowPicker] = useState(true);
   const { players, setPlayers } = usePlayers();
-  const { auth } = useAuth();
+  const { spreadsheet } = useSpreadsheet();
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const { fetchData } = useGoogleSheets();
@@ -115,7 +115,7 @@ const HistoryScreen = () => {
 
       const clipboardText =
         players.map((player, i) => `${player.name}: ${data[i]}`).join("\n") +
-        `\nhttps://docs.google.com/spreadsheets/d/${auth?.spreadsheetId}`;
+        `\nhttps://docs.google.com/spreadsheets/d/${spreadsheet?.id}`;
       Clipboard.setStringAsync(clipboardText);
 
       const updatedPlayers = [...players];

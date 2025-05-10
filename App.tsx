@@ -20,6 +20,7 @@ import { getISOWeekNumber } from "./src/utils/dateUtils";
 import { BuyinProvider } from "./src/contexts/BuyinContext";
 import HistoryScreen from "./src/screens/HistoryScreen";
 import useGoogleSignin from "./src/hooks/GoogleSignin";
+import { SpreadsheetProvider, useSpreadsheet } from "./src/contexts/SpreadsheetContext";
 
 const CustomDarkTheme = {
   ...DarkTheme,
@@ -36,17 +37,16 @@ const CustomDarkTheme = {
 
 const Tab = createBottomTabNavigator<RootTabParamList, "navigatorID">();
 
-const clientId = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID;
-
 GoogleSignin.configure({
   scopes: [
-      'https://www.googleapis.com/auth/spreadsheets',
-      'https://www.googleapis.com/auth/drive',
-    ]
+    'https://www.googleapis.com/auth/spreadsheets',
+    'https://www.googleapis.com/auth/drive',
+  ]
 });
 
 const MainApp = () => {
   const { auth } = useAuth();
+  const { spreadsheet } = useSpreadsheet(); 
   const { globalStyles } = useStyles();
   const { colors } = useTheme();
   const { getUser } = useGoogleSignin();
@@ -79,7 +79,7 @@ const MainApp = () => {
         <Tab.Screen
           name="Add"
           component={
-            auth?.accessToken && auth?.spreadsheetId ? AddScreen : LoginScreen
+            auth?.accessToken && spreadsheet?.id ? AddScreen : LoginScreen
           }
           options={{
             headerTitle: `Week ${getISOWeekNumber(new Date())}`,
@@ -91,7 +91,7 @@ const MainApp = () => {
         <Tab.Screen
           name="History"
           component={
-            auth?.accessToken && auth?.spreadsheetId
+            auth?.accessToken && spreadsheet?.id
               ? HistoryScreen
               : LoginScreen
           }
@@ -104,7 +104,7 @@ const MainApp = () => {
         <Tab.Screen
           name="Total"
           component={
-            auth?.accessToken && auth?.spreadsheetId ? TotalScreen : LoginScreen
+            auth?.accessToken && spreadsheet?.id ? TotalScreen : LoginScreen
           }
           options={{
             tabBarIcon: ({ color, size }) => (
@@ -133,11 +133,13 @@ export default function App() {
         <PlayersProvider>
           <BuyinProvider>
             <AuthProvider>
-              <MainApp />
-            </AuthProvider>
-          </BuyinProvider>
-        </PlayersProvider>
-      </StylesProvider>
-    </NavigationContainer>
+            <SpreadsheetProvider>
+            <MainApp />
+          </SpreadsheetProvider>
+        </AuthProvider>
+      </BuyinProvider>
+    </PlayersProvider>
+      </StylesProvider >
+    </NavigationContainer >
   );
 }

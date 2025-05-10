@@ -15,14 +15,14 @@ WebBrowser.maybeCompleteAuthSession();
 const useGoogleSignin = () => {
   const { auth, setAuth } = useAuth();
 
-const googleAuthConfig = {
-      clientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
-      androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
-      scopes: [
-        'https://www.googleapis.com/auth/spreadsheets',
-        'https://www.googleapis.com/auth/drive',
-      ]
-    };
+  const googleAuthConfig = {
+    clientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    scopes: [
+      'https://www.googleapis.com/auth/spreadsheets',
+      'https://www.googleapis.com/auth/drive',
+    ]
+  };
 
   const [sheetsRequest, sheetsResponse, promptSheetsAsync] = Google.useAuthRequest(googleAuthConfig);
 
@@ -40,10 +40,12 @@ const googleAuthConfig = {
       await GoogleSignin.signInSilently();
       const tokens = await GoogleSignin.getTokens();
       console.log(tokens.accessToken)
-        setAuth({
+      const newAuth = {
+        ...auth,
         account: user.user.email,
         accessToken: tokens.accessToken,
-        });
+      }
+      setAuth(newAuth);
     } catch (error) {
       console.error("Error getting user:", error);
     }
@@ -54,7 +56,7 @@ const googleAuthConfig = {
       GoogleOneTapSignIn.configure({
         webClientId: 'autoDetect'
       });
-      
+
       await GoogleOneTapSignIn.checkPlayServices();
       const signInResponse = await GoogleOneTapSignIn.signIn();
       if (signInResponse.type === 'success') {
@@ -64,7 +66,7 @@ const googleAuthConfig = {
         const createResponse = await GoogleOneTapSignIn.createAccount();
         if (createResponse.type === 'success') {
           console.log('Account created successfully:', createResponse);
-          setTimeout(() => {requestSheetsAndDriveAccess();}, 2000);
+          setTimeout(() => { requestSheetsAndDriveAccess(); }, 2000);
           const googleCredential = GoogleAuthProvider.credential(createResponse.data.idToken);
           signInWithCredential(getAuth(), googleCredential);
           return createResponse.data;
@@ -103,7 +105,7 @@ const googleAuthConfig = {
 
   const requestSheetsAndDriveAccess = async () => {
     try {
-      
+
       if (promptSheetsAsync) {
         const authResponse = await promptSheetsAsync();
         if (authResponse.type === 'success') {
